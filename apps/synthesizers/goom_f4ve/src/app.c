@@ -10,11 +10,14 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include <mios32.h>
+#include <mios32_sys.h>
 #include <string.h>
 #include <stdarg.h>
 #include "app.h"
 #include "synth.h"
 #include "midi_sysex.h"
+#include "presets.h"
+#include "eeprom.h"
 
 #include <FreeRTOS.h>
 #include <portmacro.h>
@@ -23,13 +26,14 @@
 
 #include <task.h>
 #include <queue.h>
-#include <semphr.h>
 
 
 /////////////////////////////////////////////////////////////////////////////
 // Local definitions
 /////////////////////////////////////////////////////////////////////////////
-
+u8 k0_pressed;
+u8 k1_pressed;
+u8 wk_pressed;
 
 /////////////////////////////////////////////////////////////////////////////
 // Local variables
@@ -77,6 +81,10 @@ void APP_Tick(void)
   u32 timestamp = MIOS32_TIMESTAMP_Get();
   MIOS32_BOARD_LED_Set(1, (timestamp % 20) <= ((timestamp / 100) % 10));
   
+  k0_pressed = MIOS32_SYS_STM_PINGET(GPIOE, 1<<4);
+  k1_pressed = MIOS32_SYS_STM_PINGET(GPIOE, 1<<3);
+  wk_pressed = MIOS32_SYS_STM_PINGET(GPIOA, 1);
+
   // update synth
   SYNTH_Update_1mS();
 }
@@ -98,8 +106,10 @@ void APP_MIDI_Tick(void)
 void APP_MIDI_NotifyPackage(mios32_midi_port_t port, mios32_midi_package_t midi_package)
 {
   MIDIMON_Print("MIDI_LEARN:", port, midi_package, MIOS32_TIMESTAMP_Get(), 0);
-
-
+  MIDIMON_Print("K0 ", k0_pressed, midi_package, MIOS32_TIMESTAMP_Get(),0);
+  MIDIMON_Print("K1 ", k1_pressed, midi_package, MIOS32_TIMESTAMP_Get(),0);
+  MIDIMON_Print("WK ", wk_pressed, midi_package, MIOS32_TIMESTAMP_Get(),0);
+  
   // -> synth
   SYNTH_MIDI_NotifyPackage(port, midi_package);
 }
