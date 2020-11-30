@@ -40,8 +40,6 @@
 # endif
 #endif
 
-
-
 #endif
 
 #if !defined(MIOS32_DONT_USE_BOARD_J5)
@@ -347,8 +345,14 @@ s32 MIOS32_BOARD_LED_Init(u32 leds)
       return -2; // LED doesn't exist
   #endif
 #elif defined(MIOS32_BOARD_MBHP_CORE_STM32F4VE)
+  // setup LEDS
   MIOS32_BOARD_PinInitHlp(GPIOA, GPIO_Pin_6, MIOS32_BOARD_PIN_MODE_OUTPUT_PP); // D2
   MIOS32_BOARD_PinInitHlp(GPIOA, GPIO_Pin_7, MIOS32_BOARD_PIN_MODE_OUTPUT_PP); // D3
+  // setup buttons
+  MIOS32_BOARD_PinInitHlp(GPIOA, GPIO_Pin_0, MIOS32_BOARD_PIN_MODE_INPUT_PD); // WK_UP (active high)
+  MIOS32_BOARD_PinInitHlp(GPIOE, GPIO_Pin_4, MIOS32_BOARD_PIN_MODE_INPUT_PU); // K0
+  MIOS32_BOARD_PinInitHlp(GPIOE, GPIO_Pin_3, MIOS32_BOARD_PIN_MODE_INPUT_PU); // K1
+
   return 0;
 #else
   return -1; // no LED specified for board
@@ -1300,6 +1304,7 @@ s32 MIOS32_BOARD_DAC_PinInit(u8 chn, u8 enable)
     }
     
   } else {
+
     // disable DAC channel
     switch( chn ) {
       case 0: DAC_Cmd(DAC_Channel_1, DISABLE); break;
