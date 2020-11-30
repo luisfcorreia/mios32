@@ -57,6 +57,11 @@ include $(MIOS32_PATH)/modules/notestack/notestack.mk
 # MIDImonitoring
 include $(MIOS32_PATH)/modules/midimon/midimon.mk
 
+# EEPROM
+include $(MIOS32_PATH)/modules/eeprom/eeprom.mk
+
+
+
 # common make rules
 # Please keep this include statement at the end of this Makefile. Add new modules above.
 include $(MIOS32_PATH)/include/makefile/common.mk
