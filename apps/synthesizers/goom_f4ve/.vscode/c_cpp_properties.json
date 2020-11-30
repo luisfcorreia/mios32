@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "/home/lfcorreia/.arduino15/packages/STM32/tools/**",
+                "/home/lfcorreia/Arduino/libraries/**",
+                "/home/lfcorreia/arduino-1.8.13/libraries/**",
+                "/home/lfcorreia/.arduino15/packages/STM32/hardware/stm32/1.9.0/**"
+            ],
+            "forcedInclude": [
+                "/home/lfcorreia/.arduino15/packages/STM32/hardware/stm32/1.9.0/cores/arduino/Arduino.h"
+            ],
+            "defines": [
+                "USBCON"
+            ],
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c17",
+            "cppStandard": "c++14"
+        }
+    ],
+    "version": 4
+}

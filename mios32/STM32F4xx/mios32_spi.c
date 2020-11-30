@@ -470,6 +470,7 @@ s32 MIOS32_SPI_IO_Init(u8 spi, mios32_spi_pin_driver_t spi_pin_driver)
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
 	GPIO_Init(GPIOE, &GPIO_InitStructure);	
 	MIOS32_SYS_STM_PINSET_1(GPIOE, GPIO_Pin_3);
+#elif defined(MIOS32_BOARD_MBHP_CORE_STM32F4VE)  
 #else
 # warning "Please doublecheck if RE3 has to be set to 1 to disable MEMs"
 #endif

@@ -80,7 +80,7 @@
 
 
 
-#if defined(MIOS32_BOARD_STM32F4DISCOVERY) || defined(MIOS32_BOARD_MBHP_CORE_STM32F4)
+#if defined(MIOS32_BOARD_STM32F4DISCOVERY) || defined(MIOS32_BOARD_MBHP_CORE_STM32F4) || defined(MIOS32_BOARD_MBHP_CORE_STM32F4VE)
 // I2C configuration
 // Thanks to http://www.mind-dump.net/configuring-the-stm32f4-discovery-for-audio for this info!
 

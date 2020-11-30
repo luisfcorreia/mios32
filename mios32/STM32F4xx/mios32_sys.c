@@ -316,7 +316,7 @@ u32 MIOS32_SYS_FlashSizeGet(void)
 u32 MIOS32_SYS_RAMSizeGet(void)
 {
   // stored in the so called "electronic signature"
-#if defined(MIOS32_PROCESSOR_STM32F407VG)
+#if (defined(MIOS32_PROCESSOR_STM32F407VG) || defined(MIOS32_PROCESSOR_STM32F407VE))
   return 192*1024; // unfortunately not stored in signature...
 #else
 # error "Please define RAM size here"

@@ -48,7 +48,7 @@
 # endif
 
 #elif defined(MIOS32_FAMILY_STM32F4xx)
-# if defined(MIOS32_PROCESSOR_STM32F407VG)
+# if (defined(MIOS32_PROCESSOR_STM32F407VG) ||defined(MIOS32_PROCESSOR_STM32F407VE))
 #  define PAGE_SIZE ((uint16_t)0x4000)  /* Page size = 16KByte */
 #  ifdef EEPROM_START_ADDRESS
 #   error "EEPROM_START_ADDRESS can't be changed for STM32F4 devices!"

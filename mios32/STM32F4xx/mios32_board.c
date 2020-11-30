@@ -31,10 +31,16 @@
 #if !defined(MIOS32_BOARD_J15_LED_NUM)
 # if defined(MIOS32_BOARD_STM32F4DISCOVERY) || defined(MIOS32_BOARD_MBHP_CORE_STM32F4)
 #  define MIOS32_BOARD_J15_LED_NUM 4
+
+# elif defined(MIOS32_BOARD_MBHP_CORE_STM32F4VE)
+#  define MIOS32_BOARD_J15_LED_NUM 2
+
 # else
 #  warning "Please define number of available LEDs (take only 1 by default)"
 # endif
 #endif
+
+
 
 #endif
 
@@ -66,6 +72,8 @@ static const j5_pin_t j5_pin[J5_NUM_PINS] = {
   { GPIOB, GPIO_Pin_1 },
 };
 
+#elif defined(MIOS32_BOARD_MBHP_CORE_STM32F4VE)
+#define J5_NUM_PINS 0
 #else
 #define J5_NUM_PINS 0
 #warning "No J5 pins defined for this MIOS32_BOARD"
@@ -111,6 +119,8 @@ static const j10_pin_t j10_pin[J10_NUM_PINS] = {
   { GPIOE, GPIO_Pin_7 },
 };
 
+#elif defined(MIOS32_BOARD_MBHP_CORE_STM32F4VE)
+  #define J10_NUM_PINS 0
 #else
 #define J10_NUM_PINS 0
 #warning "No J10 pins defined for this MIOS32_BOARD"
@@ -124,7 +134,7 @@ static const j10_pin_t j10_pin[J10_NUM_PINS] = {
 // J28 pin mapping
 /////////////////////////////////////////////////////////////////////////////
 
-#if defined(MIOS32_BOARD_STM32F4DISCOVERY) || defined(MIOS32_BOARD_MBHP_CORE_STM32F4)
+#if defined(MIOS32_BOARD_STM32F4DISCOVERY) || defined(MIOS32_BOARD_MBHP_CORE_STM32F4) || defined(MIOS32_BOARD_MBHP_CORE_STM32F4VE)
 # define J28_NUM_PINS 0
 // not supported by this board
 #else
@@ -202,6 +212,8 @@ static const j10_pin_t j10_pin[J10_NUM_PINS] = {
 
 #define J15_PIN_D7_IN   MIOS32_SYS_STM_PINGET(J15_D7_PORT, J15_D7_PIN)
 
+#elif defined(MIOS32_BOARD_MBHP_CORE_STM32F4VE)
+#define J15_AVAILABLE 0
 #else
 #define J15_AVAILABLE 0
 #warning "No J15 (LCD) port defined for this MIOS32_BOARD"
@@ -306,36 +318,38 @@ static s32 MIOS32_BOARD_PinInitHlp(GPIO_TypeDef *port, u16 pin_mask, mios32_boar
 s32 MIOS32_BOARD_LED_Init(u32 leds)
 {
 #if defined(MIOS32_BOARD_STM32F4DISCOVERY) || defined(MIOS32_BOARD_MBHP_CORE_STM32F4)
-#if MIOS32_BOARD_J15_LED_NUM >= 1
+  #if MIOS32_BOARD_J15_LED_NUM >= 1
 
-  // 4 LEDs are available
-  if( leds & 1 ) {
-    MIOS32_BOARD_PinInitHlp(GPIOD, GPIO_Pin_12, MIOS32_BOARD_PIN_MODE_OUTPUT_PP); // LED4 (Green)
-  }
+    // 4 LEDs are available
+    if( leds & 1 ) {
+      MIOS32_BOARD_PinInitHlp(GPIOD, GPIO_Pin_12, MIOS32_BOARD_PIN_MODE_OUTPUT_PP); // LED4 (Green)
+    }
 
-#if MIOS32_BOARD_J15_LED_NUM >= 2
-  if( leds & 2 ) {
-    MIOS32_BOARD_PinInitHlp(GPIOD, GPIO_Pin_13, MIOS32_BOARD_PIN_MODE_OUTPUT_PP); // LED3 (Orange)
-  }
-#endif
+    #if MIOS32_BOARD_J15_LED_NUM >= 2
+      if( leds & 2 ) {
+        MIOS32_BOARD_PinInitHlp(GPIOD, GPIO_Pin_13, MIOS32_BOARD_PIN_MODE_OUTPUT_PP); // LED3 (Orange)
+      }
+    #endif
 
-#if MIOS32_BOARD_J15_LED_NUM >= 3
-  if( leds & 4 ) {
-    MIOS32_BOARD_PinInitHlp(GPIOD, GPIO_Pin_14, MIOS32_BOARD_PIN_MODE_OUTPUT_PP); // LED5 (Red)
-  }
-#endif
+    #if MIOS32_BOARD_J15_LED_NUM >= 3
+      if( leds & 4 ) {
+        MIOS32_BOARD_PinInitHlp(GPIOD, GPIO_Pin_14, MIOS32_BOARD_PIN_MODE_OUTPUT_PP); // LED5 (Red)
+      }
+    #endif
 
-#if MIOS32_BOARD_J15_LED_NUM >= 4
-  if( leds & 8 ) {
-    MIOS32_BOARD_PinInitHlp(GPIOD, GPIO_Pin_15, MIOS32_BOARD_PIN_MODE_OUTPUT_PP); // LED6 (Blue)
-  }
-#endif
+    #if MIOS32_BOARD_J15_LED_NUM >= 4
+      if( leds & 8 ) {
+        MIOS32_BOARD_PinInitHlp(GPIOD, GPIO_Pin_15, MIOS32_BOARD_PIN_MODE_OUTPUT_PP); // LED6 (Blue)
+      }
+    #endif
 
-  if( leds & 0xfffffff0)
-    return -2; // LED doesn't exist
-
-#endif
-  return 0; // no error
+    if( leds & 0xfffffff0)
+      return -2; // LED doesn't exist
+  #endif
+#elif defined(MIOS32_BOARD_MBHP_CORE_STM32F4VE)
+  MIOS32_BOARD_PinInitHlp(GPIOA, GPIO_Pin_6, MIOS32_BOARD_PIN_MODE_OUTPUT_PP); // D2
+  MIOS32_BOARD_PinInitHlp(GPIOA, GPIO_Pin_7, MIOS32_BOARD_PIN_MODE_OUTPUT_PP); // D3
+  return 0;
 #else
   return -1; // no LED specified for board
 #endif
